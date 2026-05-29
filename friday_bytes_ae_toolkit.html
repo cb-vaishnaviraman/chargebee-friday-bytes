@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Friday Bytes 🧠 — AE Tool Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F2;
+    --surface: #FFFFFF;
+    --surface2: #F0EEE8;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.14);
+    --text-primary: #1A1915;
+    --text-secondary: #6B6860;
+    --text-muted: #A09D96;
+    --accent: #185FA5;
+    --accent-bg: #E6F1FB;
+    --danger: #A32D2D;
+    --teal: #0F6E56; --teal-bg: #E1F5EE; --teal-border: #5DCAA5;
+    --blue: #0C447C; --blue-bg: #E6F1FB; --blue-border: #85B7EB;
+    --amber: #633806; --amber-bg: #FAEEDA; --amber-border: #EF9F27;
+    --purple: #3C3489; --purple-bg: #EEEDFE; --purple-border: #AFA9EC;
+    --coral: #712B13; --coral-bg: #FAECE7; --coral-border: #F0997B;
+    --pink: #72243E; --pink-bg: #FBEAF0; --pink-border: #ED93B1;
+    --green: #27500A; --green-bg: #EAF3DE; --green-border: #97C459;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-pill: 20px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page { max-width: 960px; margin: 0 auto; }
+
+  .header {
+    margin-bottom: 2rem;
+    padding: 2rem 2.5rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 10px;
+    border: 1px solid rgba(24,95,165,0.2);
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .header-meta {
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.8;
+  }
+
+  .section-header {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 1.5rem 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    transform: translateY(-1px);
+  }
+  .card-ae {
+    border-color: rgba(24,95,165,0.25);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F5F9FE 100%);
+  }
+  .card-ae:hover {
+    border-color: rgba(24,95,165,0.45);
+  }
+
+  .card-top { display: flex; align-items: center; gap: 12px; }
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+  }
+  .card-name { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.2; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .card-tagline { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
+  .ae-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--blue-bg);
+    color: var(--blue);
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--blue-border);
+    letter-spacing: 0.03em;
+  }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2px 0; }
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 6px;
+  }
+
+  .bp-list { display: flex; flex-direction: column; gap: 6px; }
+  .bp-item { font-size: 11.5px; color: var(--text-secondary); display: flex; gap: 6px; line-height: 1.55; }
+  .bp-item b { color: var(--text-primary); font-weight: 500; }
+  .bp-danger { color: var(--danger) !important; }
+  .bp-danger b { color: var(--danger) !important; }
+
+  .links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+  .pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid;
+    transition: opacity 0.15s, transform 0.12s;
+  }
+  .pill:hover { opacity: 0.82; transform: scale(0.98); }
+  .pill i { font-size: 13px; }
+
+  .p-teal   { background: var(--teal-bg);   color: var(--teal);   border-color: var(--teal-border); }
+  .p-blue   { background: var(--blue-bg);   color: var(--blue);   border-color: var(--blue-border); }
+  .p-amber  { background: var(--amber-bg);  color: var(--amber);  border-color: var(--amber-border); }
+  .p-purple { background: var(--purple-bg); color: var(--purple); border-color: var(--purple-border); }
+  .p-coral  { background: var(--coral-bg);  color: var(--coral);  border-color: var(--coral-border); }
+  .p-pink   { background: var(--pink-bg);   color: var(--pink);   border-color: var(--pink-border); }
+  .p-green  { background: var(--green-bg);  color: var(--green);  border-color: var(--green-border); }
+  .p-li     { background: #E6F1FB; color: #185FA5; border-color: #378ADD; }
+
+  .footer {
+    margin-top: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .footer i { font-size: 22px; color: var(--accent); flex-shrink: 0; }
+  .footer p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .footer b { color: var(--text-primary); }
+
+  @media (min-width: 640px) {
+    .card-wide { grid-column: span 2; }
+    .card-wide .card-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  }
+
+  @media (max-width: 600px) {
+    .header { flex-direction: column; }
+    .header-meta { text-align: left; }
+    .grid { grid-template-columns: 1fr; }
+    body { padding: 1rem 0.75rem 3rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-badge"><i class="ti ti-briefcase"></i> Account Executives</div>
+      <h1>Friday Bytes 🧠 — AE Tool Kit</h1>
+      <p>Everything you need to discover, demo, and close. Your full stack — from first touch to signed contract. 🏆</p>
+    </div>
+    <div class="header-meta">
+      <div>📅 Friday Bytes</div>
+      <div>👥 For AEs</div>
+      <div>🛠 11 Tools</div>
+    </div>
+  </div>
+
+  <div class="section-header">Core tools — shared with XDRs</div>
+
+  <div class="grid">
+
+    <!-- SALESFORCE -->
+    <div class="card card-wide">
+      <div class="card-top">
+        <div class="card-icon" style="background:#E1F5EE;"><i class="ti ti-cloud" style="color:#0F6E56;"></i></div>
+        <div>
+          <div class="card-name">Salesforce</div>
+          <div class="card-tagline">Your deal HQ. Every opportunity, activity & forecast lives here — log it or lose it. 🙏</div>
+        </div>
+      </div>
+      <div class="links">
+        <a href="https://app.notion.com/p/chargebeeknowtion/Salesforce-Tech-Stack-Modernisation-da6c0375f3ba4a87bd6805a321449dce" class="pill p-teal" target="_blank"><i class="ti ti-book"></i> Playbook</a>
+        <a href="https://drive.google.com/drive/folders/1OC4Xc7mGq5b_EHXWNlQ3WiDd--0ZRUVz" class="pill p-blue" target="_blank"><i class="ti ti-player-play"></i> Videos</a>
+        <a href="https://drive.google.com/drive/folders/1OC4Xc7mGq5b_EHXWNlQ3WiDd--0ZRUVz" class="pill p-amber" target="_blank"><i class="ti ti-folder"></i> Resources</a>
+      </div>
+      <hr class="divider"/>
+      <div class="card-inner">
+        <div>
+          <p class="section-label">Best practices — from Salesblazer</p>
+          <div class="bp-list">
+            <div class="bp-item">🎯 <span><b>Build your buyer persona first.</b> Role, company, motivations & challenges — all in one doc before any outreach.</span></div>
+            <div class="bp-item">📊 <span><b>Use your CRM — actually.</b> Every interaction logged in real time = your deal memory & forecast insurance.</span></div>
+            <div class="bp-item">🔥 <span><b>Prioritise by conversion likelihood.</b> Let data guide your time, not gut feel.</span></div>
+            <div class="bp-item">🤝 <span><b>Lead with discovery, not demo.</b> Ask first, listen more than you talk. Trust before pitch.</span></div>
+            <div class="bp-item">📖 <span><b>Customer stories beat feature slides.</b> A relevant case study closes faster every time.</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="section-label">Official Salesforce resources</p>
+          <div class="bp-list" style="margin-bottom: 10px;">
+            <div class="bp-item">📘 <span>Full 18 best practices from Salesforce's top sellers — straight from the Salesblazer blog.</span></div>
+            <div class="bp-item">💼 <span>Salesblazer Highlights — weekly LinkedIn newsletter from Salesforce Sales Cloud.</span></div>
+          </div>
+          <div class="links" style="flex-direction: column; align-items: flex-start;">
+            <a href="https://www.salesforce.com/blog/sales/sales-best-practices/" class="pill p-teal" target="_blank"><i class="ti ti-external-link"></i> 18 Best Practices — Salesblazer</a>
+            <a href="https://www.linkedin.com/newsletters/salesblazer-highlights-7139005913536876546" class="pill p-li" target="_blank"><i class="ti ti-brand-linkedin"></i> Salesblazer Highlights on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ZOOMINFO -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon" style="background:#E6F1FB;"><i class="ti ti-zoom-in" style="color:#185FA5;"></i></div>
+        <div>
+          <div class="card-name">ZoomInfo</div>
+          <div class="card-tagline">Find the right person, right company, right now. Your prospecting superpower for building target lists. 🔍</div>
+        </div>
+      </div>
+      <div class="links">
+        <a href="https://app.notion.com/p/chargebeeknowtion/Zoominfo-34c3592792eb807aa7c3fb20d255042f" class="pill p-teal" target="_blank"><i class="ti ti-book"></i> Playbook & How-to</a>
+        <a href="https://drive.google.com/drive/folders/1hyXz27g4-TNVMYM2c8PCW0Liq9S06Tsr" class="pill p-blue" target="_blank"><i class="ti ti-arrows-right"></i> Workflow</a>
+        <a href="https://drive.google.com/drive/folders/1ALJ-aD7m7GgNDKknkJgmGUkrdORUiYt0" class="pill p-amber" target="_blank"><i class="ti ti-antenna"></i> Intent Signals</a>
+      </div>
+    </div>
+
+    <!-- 6SENSE -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon" style="background:#FAEEDA;"><i class="ti ti-antenna" style="color:#854F0B;"></i></div>
+        <div>
+          <div class="card-name">6sense</div>
+          <div class="card-tagline">Know who's in-market before they raise their hand. Intent signals tell you which accounts to prioritise today. 🎯</div>
+        </div>
+      </div>
+      <div class="links">
+        <a href="https://app.notion.com/p/chargebeeknowtion/6-Sense-1fc3592792eb818eb459c30cf478b4bb" class="pill p-teal" target="_blank"><i class="ti ti-book"></i> Playbook</a>
+        <a href="https://app.notion.com/p/chargebeeknowtion/6-Sense-1fc3592792eb818eb459c30cf478b4bb" class="pill p-blue" target="_blank"><i class="ti ti-player-play"></i> How to Use</a>
+      </div>
+    </div>
+
+    <!-- SALES NAVIGATOR -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon" style="background:#EEEDFE;"><i class="ti ti-brand-linkedin" style="color:#3C3489;"></i></div>
+        <div>
+          <div class="card-name">Sales Navigator</div>
+          <div class="card-tagline">Map the full buying committee, track job changes & get warm on multi-threaded deals before your first call. 💼</div>
+        </div>
+      </div>
+      <div class="links">
+        <a href="https://app.notion.com/p/chargebeeknowtion/Sales-Navigator-34c3592792eb8015bd00e72c4c5e78d6" class="pill p-purple" target="_blank"><i class="ti ti-book"></i> Notion Guide</a>
+        <a href="https://drive.google.com/file/d/1ddRmQKF0jm3XFiow3zfKZCugWyYb09fR/view" class="pill p-blue" target="_blank"><i class="ti ti-file"></i> Quick Reference</a>
+      </div>
+    </div>
+
+    <!-- SALESLOFT -->
+    <div class="card card-wide">
+      <div class="card-top">
+        <div class="card-icon" style="background:#FAECE7;"><i class="ti ti-layout-kanban" style="color:#993C1D;"></i></div>
+        <div>
+          <div class="card-name">SalesLoft</div>
+          <div class="card-tagline">Run deal cadences, track every touchpoint, and keep your pipeline moving with multi-channel sequences. 📊</div>
+        </div>
+      </div>
+      <div class="links">
+        <a href="https://drive.google.com/drive/folders/1-re-MtpyJY_zoQPV-wUICYh7SOnLg0w4" class="pill p-coral" target="_blank"><i class="ti ti-player-play"></i> Training Videos</a>
+        <a href="https://drive.google.com/drive/folders/1-re-MtpyJY_zoQPV-wUICYh7SOnLg0w4" class="pill p-amber" target="_blank"><i class="ti ti-book"></i> Resources</a>
+      </div>
+      <hr class="divider"/>
+      <div class="card-inner">
+        <div>
+          <p class="section-label">Cadence essentials</p>
+          <div class="bp-list">
+            <div class="bp-item">1️⃣ <span><b>Enrol prospects</b> — right cadence for their deal stage.</span></div>
+            <div class="bp-item">2️⃣ <span><b>Personalise before sending</b> — 20% personalisation = 2× reply rate.</span></div>
+            <div class="bp-item">3️⃣ <span><b>Multi-channel it</b> — email + call + LinkedIn = 77–91% more replies.</span></div>
+            <div class="bp-item">4️⃣ <span><b>Hot lead?</b> Drop everything — run Call Now cadence immediately.</span></div>
+            <div class="bp-item">5️⃣ <span><b>Final "Other" step</b> — decide: nurture, re-enrol, or remove. Never ghost a prospect.</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="section-label">Salesforce sync — auto vs manual</p>
+          <div class="bp-list">
+            <div class="bp-item">✅ <span><b>Auto-syncs:</b> emails sent, calls logged, cadence steps — as long as the SFDC record exists.</span></div>
+            <div class="bp-item">✏️ <span><b>Log manually:</b> call outcomes/notes & meeting next steps. Log before you move on.</span></div>
+            <div class="bp-item bp-danger">⚠️ <span><b>Gaps that break sync:</b> no SFDC record, personal email, skipped disposition, unfilled dynamic fields.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORUM -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon" style="background:#FBEAF0;"><i class="ti ti-phone-call" style="color:#993556;"></i></div>
+        <div>
+          <div class="card-name">Orum</div>
+          <div class="card-tagline">AI parallel dialer — skip voicemails, stack live connects, and hit call volume without the grind. 📞</div>
+        </div>
+      </div>
+      <div class="bp-list" style="margin-top: 2px;">
+        <div class="bp-item">▶ <span>Select cadence tasks → Orum auto-advances → log disposition every call.</span></div>
+        <div class="bp-item">▶ <span>Calls write back to Salesloft with "Orum" tag — use Call Reports for full volume.</span></div>
+        <div class="bp-item bp-danger">⚠️ <span>Orum calls won't appear in SL Calls section — use Call Reports for full dialing volume.</span></div>
+      </div>
+      <div class="links" style="margin-top: 4px;">
+        <a href="https://docs.google.com/presentation/d/1aQMVmNgWvvteV9eXmk_WUV-LRxX8yrzx5x6adCh7XDU/edit?slide=id.g3bf2aa1f8d9_0_0" class="pill p-pink" target="_blank"><i class="ti ti-presentation"></i> Orum Guide (Slides)</a>
+      </div>
+    </div>
+
+    <!-- LUSHA -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon" style="background:#E6F1FB;"><i class="ti ti-id" style="color:#185FA5;"></i></div>
+        <div>
+          <div class="card-name">Lusha</div>
+          <div class="card-tagline">One click on LinkedIn → verified direct dial + email. Reach decision-makers without the guesswork. 🎯</div>
+        </div>
+      </div>
+      <div class="links">
+        <a href="https://dashboard.lusha.co/dashboard" class="pill p-blue" target="_blank"><i class="ti ti-external-link"></i> Open Lusha Dashboard</a>
+      </div>
+    </div>
+
+    <!-- CLARI -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon" style="background:#EEEDFE;"><i class="ti ti-chart-line" style="color:#534AB7;"></i></div>
+        <div>
+          <div class="card-name">Clari</div>
+          <div class="card-tagline">AI-powered revenue forecasting with Co-Pilot + Wingman. See deal risk early and call your quarter with confidence. 🔮</div>
+        </div>
+      </div>
+      <div class="links">
+        <a href="https://drive.google.com/drive/folders/10keY3LB1bOQ33pkPcPVq9sAOewTFQNw-" class="pill p-purple" target="_blank"><i class="ti ti-folder"></i> Co-Pilot + Wingman Resources</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-header" style="margin-top: 2rem;">AE exclusive tools</div>
+
+  <div class="grid">
+
+    <!-- CASE STUDIES -->
+    <div class="card card-ae">
+      <div class="card-top">
+        <div class="card-icon" style="background:#EAF3DE;"><i class="ti ti-trophy" style="color:#3B6D11;"></i></div>
+        <div>
+          <div class="card-name">Case Studies <span class="ae-badge"><i class="ti ti-lock" style="font-size:9px;"></i> AE Only</span></div>
+          <div class="card-tagline">Your best proof of value — filter by industry, deal size & use case. Pull this before every demo. 🏅</div>
+        </div>
+      </div>
+      <div class="bp-list">
+        <div class="bp-item">📊 <span><b>Live Looker dashboard</b> of Chargebee wins — filterable by vertical, company size & use case.</span></div>
+        <div class="bp-item">🎯 <span>Match a customer story to your prospect's exact situation — nothing closes like social proof.</span></div>
+      </div>
+      <div class="links">
+        <a href="https://datastudio.google.com/u/0/reporting/c60da4a0-6cb1-4556-8ac6-6d0ba7434d51/page/rZfiC" class="pill p-green" target="_blank"><i class="ti ti-chart-bar"></i> Open Case Study Dashboard</a>
+      </div>
+    </div>
+
+    <!-- RESPONSIVE (RFP) -->
+    <div class="card card-ae">
+      <div class="card-top">
+        <div class="card-icon" style="background:#FAEEDA;"><i class="ti ti-file-check" style="color:#854F0B;"></i></div>
+        <div>
+          <div class="card-name">Responsive (RFP) <span class="ae-badge"><i class="ti ti-lock" style="font-size:9px;"></i> AE Only</span></div>
+          <div class="card-tagline">Your RFP & security questionnaire tool. Pull pre-approved answers fast — never start from scratch again. 📋</div>
+        </div>
+      </div>
+      <div class="bp-list">
+        <div class="bp-item">⚡ <span><b>Pre-approved answers</b> — search by keyword and pull responses instantly.</span></div>
+        <div class="bp-item">🤝 <span><b>Collaborate with SE & Legal</b> — loop them in directly inside the tool for review.</span></div>
+        <div class="bp-item">📁 <span><b>Keep it updated</b> — if you improve an answer, flag it so the library stays current for everyone.</span></div>
+      </div>
+      <div class="links">
+        <a href="https://app.notion.com/p/chargebeeknowtion/31e3592792eb802cbc66e964813eb674?v=31e3592792eb8050b97d000c5e5852f2" class="pill p-amber" target="_blank"><i class="ti ti-book"></i> RFP Playbook & Guide</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <i class="ti ti-trophy"></i>
+    <p>
+      <b>AEs close deals with context, proof & speed.</b> Use Case Studies before every demo, Responsive before every RFP, and keep SFDC spotless — your forecast depends on it. Go close! 🙌
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
