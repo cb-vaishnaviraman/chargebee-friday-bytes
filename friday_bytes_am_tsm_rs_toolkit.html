@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Friday Bytes — AM / TSM / RS Tool Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#F7F6F2;--surface:#FFFFFF;--border:rgba(0,0,0,0.08);--border-strong:rgba(0,0,0,0.14);
+  --text-primary:#1A1915;--text-secondary:#6B6860;--text-muted:#A09D96;
+  --accent:#0F6E56;--accent-bg:#E1F5EE;--danger:#A32D2D;
+  --teal:#0F6E56;--teal-bg:#E1F5EE;--teal-b:#5DCAA5;
+  --blue:#0C447C;--blue-bg:#E6F1FB;--blue-b:#85B7EB;
+  --amber:#633806;--amber-bg:#FAEEDA;--amber-b:#EF9F27;
+  --purple:#3C3489;--purple-bg:#EEEDFE;--purple-b:#AFA9EC;
+  --coral:#712B13;--coral-bg:#FAECE7;--coral-b:#F0997B;
+  --pink:#72243E;--pink-bg:#FBEAF0;--pink-b:#ED93B1;
+  --green:#27500A;--green-bg:#EAF3DE;--green-b:#97C459;
+  --gray:#444441;--gray-bg:#F1EFE8;--gray-b:#D3D1C7;
+  --r:12px;--rsm:8px;--rpill:20px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh;padding:2rem 1rem 4rem;}
+.page{max-width:1000px;margin:0 auto;}
+.header{margin-bottom:2rem;padding:2rem 2.5rem;background:var(--surface);border-radius:var(--r);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;}
+.header-left{flex:1;min-width:200px;}
+.hbadge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-bg);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:var(--rpill);margin-bottom:10px;border:1px solid rgba(15,110,86,.2);}
+.header h1{font-size:26px;font-weight:600;line-height:1.25;margin-bottom:6px;}
+.header p{font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.hmeta{text-align:right;font-size:12px;color:var(--text-muted);font-family:'DM Mono',monospace;line-height:1.8;}
+.sec{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin:1.75rem 0 .75rem;display:flex;align-items:center;gap:10px;}
+.sec::after{content:'';flex:1;height:1px;background:var(--border);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s,border-color .2s,transform .15s;}
+.card:hover{border-color:var(--border-strong);box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-1px);}
+.card-wide{grid-column:span 2;}
+.card-inner{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2px;}
+.ctop{display:flex;align-items:center;gap:12px;}
+.cicon{width:40px;height:40px;border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;}
+.cname{font-size:15px;font-weight:600;color:var(--text-primary);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.ctag{font-size:12px;color:var(--text-secondary);line-height:1.55;}
+.divider{border:none;border-top:1px solid var(--border);margin:2px 0;}
+.slabel{font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.bpl{display:flex;flex-direction:column;gap:6px;}
+.bpi{font-size:11.5px;color:var(--text-secondary);display:flex;gap:6px;line-height:1.55;}
+.bpi b{color:var(--text-primary);font-weight:500;}
+.bpd{color:var(--danger)!important;}
+.bpd b{color:var(--danger)!important;}
+.links{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+.pill{font-size:11px;font-weight:500;padding:4px 10px;border-radius:var(--rpill);text-decoration:none;display:inline-flex;align-items:center;gap:5px;border:1px solid;transition:opacity .15s,transform .12s;}
+.pill:hover{opacity:.82;transform:scale(.98);}
+.pill i{font-size:13px;}
+.pt{background:var(--teal-bg);color:var(--teal);border-color:var(--teal-b);}
+.pb{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-b);}
+.pa{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-b);}
+.pp{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-b);}
+.pc{background:var(--coral-bg);color:var(--coral);border-color:var(--coral-b);}
+.ppk{background:var(--pink-bg);color:var(--pink);border-color:var(--pink-b);}
+.pg{background:var(--green-bg);color:var(--green);border-color:var(--green-b);}
+.pgr{background:var(--gray-bg);color:var(--gray);border-color:var(--gray-b);}
+.pli{background:#E6F1FB;color:#185FA5;border-color:#378ADD;}
+.footer{margin-top:1.75rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.5rem;display:flex;align-items:center;gap:12px;}
+.footer i{font-size:22px;color:var(--accent);flex-shrink:0;}
+.footer p{font-size:13px;color:var(--text-secondary);line-height:1.6;}
+.footer b{color:var(--text-primary);}
+@media(max-width:700px){
+  .card-wide{grid-column:span 1;}
+  .card-inner{grid-template-columns:1fr;}
+  .header{flex-direction:column;}
+  .hmeta{text-align:left;}
+  .grid{grid-template-columns:1fr;}
+  body{padding:1rem .75rem 3rem;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div class="header-left">
+    <div class="hbadge"><i class="ti ti-users"></i> AM · TSM · Renewal Specialists</div>
+    <h1>Friday Bytes 🧠 — AM / TSM / RS Tool Kit</h1>
+    <p>Your complete stack for managing accounts, driving renewals, and growing existing revenue. Retain, expand, repeat. 🌱</p>
+  </div>
+  <div class="hmeta">
+    <div>📅 Friday Bytes</div>
+    <div>👥 AM · TSM · RS</div>
+    <div>🛠 9 Tools</div>
+  </div>
+</div>
+
+<div class="sec">Your tool stack</div>
+<div class="grid">
+
+  <!-- SALESFORCE -->
+  <div class="card card-wide">
+    <div class="ctop">
+      <div class="cicon" style="background:#E1F5EE;"><i class="ti ti-cloud" style="color:#0F6E56;"></i></div>
+      <div><div class="cname">Salesforce</div><div class="ctag">Your account & renewal HQ. Every contract, amendment, renewal opportunity & customer interaction lives here. If it's not logged, it didn't happen — and your renewal will suffer for it. 🙏</div></div>
+    </div>
+    <div class="links">
+      <a href="https://app.notion.com/p/chargebeeknowtion/Salesforce-Tech-Stack-Modernisation-da6c0375f3ba4a87bd6805a321449dce" class="pill pt" target="_blank"><i class="ti ti-book"></i> Playbook</a>
+      <a href="https://drive.google.com/drive/folders/1OC4Xc7mGq5b_EHXWNlQ3WiDd--0ZRUVz" class="pill pb" target="_blank"><i class="ti ti-player-play"></i> Videos</a>
+      <a href="https://drive.google.com/drive/folders/1OC4Xc7mGq5b_EHXWNlQ3WiDd--0ZRUVz" class="pill pa" target="_blank"><i class="ti ti-folder"></i> Resources</a>
+    </div>
+    <hr class="divider"/>
+    <div class="card-inner">
+      <div>
+        <p class="slabel">Renewals & amendments best practices</p>
+        <div class="bpl">
+          <div class="bpi">🔄 <span><b>Renewal opps are auto-created.</b> Once a contract is Closed Won - Booked and Activated, a renewal opportunity auto-generates — find it under the contract's "Renewal Opportunity" section.</span></div>
+          <div class="bpi">✏️ <span><b>Amendments start on the contract page.</b> Click "Amend Contract" to handle upsells, cross-sells, downsells, or product swaps. Co-terming keeps all subscriptions aligned to one renewal date.</span></div>
+          <div class="bpi">📅 <span><b>Start renewal conversations 90 days out.</b> Don't wait for the auto-trigger — build the relationship before the clock starts ticking.</span></div>
+          <div class="bpi">📊 <span><b>Log everything.</b> Every call, email & meeting against the Account and Opportunity record — your forecast accuracy depends on it.</span></div>
+          <div class="bpi">⚠️ <span><b>Never skip Contact Role.</b> It's a mandatory field before any contract moves to Closed Won — missing it blocks the RSO validation.</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="slabel">Opportunity stages for AM / RS / TSM</p>
+        <div class="bpl">
+          <div class="bpi">📍 <span><b>Value Alignment (20%)</b> — SC auto-assigned here. Confirm account details & expansion scope.</span></div>
+          <div class="bpi">📍 <span><b>Solution Alignment (40%)</b> — technical win in progress. Keep SC aligned.</span></div>
+          <div class="bpi">📍 <span><b>Scoping / Proposing (60%)</b> — primary quote required to advance.</span></div>
+          <div class="bpi">📍 <span><b>Negotiating (80%)</b> — approved quote required before Pre Close.</span></div>
+          <div class="bpi">📍 <span><b>Closed Won - Pending (99%)</b> — SpotDraft contract signed + all mandatory fields filled.</span></div>
+          <div class="bpi">📍 <span><b>Closed Won - Booked (100%)</b> — RSO validates → contract auto-created → activate it.</span></div>
+        </div>
+        <div class="links" style="margin-top:8px;flex-direction:column;align-items:flex-start;">
+          <a href="https://www.salesforce.com/blog/sales/sales-best-practices/" class="pill pt" target="_blank"><i class="ti ti-external-link"></i> 18 Best Practices — Salesblazer</a>
+          <a href="https://www.linkedin.com/newsletters/salesblazer-highlights-7139005913536876546" class="pill pli" target="_blank"><i class="ti ti-brand-linkedin"></i> Salesblazer Highlights on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALESLOFT -->
+  <div class="card">
+    <div class="ctop">
+      <div class="cicon" style="background:#FAECE7;"><i class="ti ti-layout-kanban" style="color:#993C1D;"></i></div>
+      <div><div class="cname">SalesLoft</div><div class="ctag">Your renewal & expansion outreach engine. Run renewal cadences, track all touchpoints, and never let an account go dark before the renewal date. 📊</div></div>
+    </div>
+    <hr class="divider"/>
+    <p class="slabel">Renewal cadence best practices</p>
+    <div class="bpl">
+      <div class="bpi">📅 <span><b>Start your renewal cadence 90 days out.</b> Don't wait until 30 days — by then you're negotiating, not nurturing.</span></div>
+      <div class="bpi">✉️ <span><b>Personalise every touch.</b> Reference the customer's usage, wins, and growth since they signed. Generic renewal emails get ignored.</span></div>
+      <div class="bpi">📞 <span><b>Multi-channel wins.</b> Email + call + LinkedIn = 77–91% more responses vs email alone. Especially critical for at-risk accounts.</span></div>
+      <div class="bpi bpd">⚠️ <span>All SalesLoft activity auto-syncs to SFDC only if the Account/Contact record exists. Log call outcomes manually — don't skip dispositions.</span></div>
+    </div>
+    <div class="links" style="margin-top:4px;">
+      <a href="https://drive.google.com/drive/folders/1-re-MtpyJY_zoQPV-wUICYh7SOnLg0w4" class="pill pc" target="_blank"><i class="ti ti-player-play"></i> Training Videos</a>
+      <a href="https://drive.google.com/drive/folders/1-re-MtpyJY_zoQPV-wUICYh7SOnLg0w4" class="pill pa" target="_blank"><i class="ti ti-book"></i> Resources</a>
+    </div>
+  </div>
+
+  <!-- ZOOMINFO -->
+  <div class="card">
+    <div class="ctop">
+      <div class="cicon" style="background:#E6F1FB;"><i class="ti ti-zoom-in" style="color:#185FA5;"></i></div>
+      <div><div class="cname">ZoomInfo</div><div class="ctag">Keep your account data clean and current. Track org changes, new stakeholders & job movements — especially at renewal time when champions move. 🔍</div></div>
+    </div>
+    <div class="links">
+      <a href="https://app.notion.com/p/chargebeeknowtion/Zoominfo-34c3592792eb807aa7c3fb20d255042f" class="pill pt" target="_blank"><i class="ti ti-book"></i> Playbook & How-to</a>
+      <a href="https://drive.google.com/drive/folders/1hyXz27g4-TNVMYM2c8PCW0Liq9S06Tsr" class="pill pb" target="_blank"><i class="ti ti-arrows-right"></i> Workflow</a>
+      <a href="https://drive.google.com/drive/folders/1ALJ-aD7m7GgNDKknkJgmGUkrdORUiYt0" class="pill pa" target="_blank"><i class="ti ti-antenna"></i> Intent Signals</a>
+    </div>
+  </div>
+
+  <!-- 6SENSE -->
+  <div class="card">
+    <div class="ctop">
+      <div class="cicon" style="background:#FAEEDA;"><i class="ti ti-antenna" style="color:#854F0B;"></i></div>
+      <div><div class="cname">6sense</div><div class="ctag">Spot expansion signals & at-risk accounts early. If a customer is researching competitors, 6sense will tell you before they tell you. 🎯</div></div>
+    </div>
+    <div class="bpl" style="margin-top:2px;">
+      <div class="bpi">🔎 <span><b>Watch for competitor research signals</b> on your existing accounts — a key early warning sign of churn risk.</span></div>
+      <div class="bpi">📈 <span><b>Spot upsell intent.</b> Accounts showing buying signals for adjacent products are your warmest expansion targets.</span></div>
+    </div>
+    <div class="links" style="margin-top:4px;">
+      <a href="https://app.notion.com/p/chargebeeknowtion/6-Sense-1fc3592792eb818eb459c30cf478b4bb" class="pill pt" target="_blank"><i class="ti ti-book"></i> Playbook</a>
+      <a href="https://app.notion.com/p/chargebeeknowtion/6-Sense-1fc3592792eb818eb459c30cf478b4bb" class="pill pb" target="_blank"><i class="ti ti-player-play"></i> How to Use</a>
+    </div>
+  </div>
+
+  <!-- SALES NAVIGATOR -->
+  <div class="card">
+    <div class="ctop">
+      <div class="cicon" style="background:#EEEDFE;"><i class="ti ti-brand-linkedin" style="color:#3C3489;"></i></div>
+      <div><div class="cname">Sales Navigator</div><div class="ctag">Multi-thread your accounts. Track job changes, identify new stakeholders & map the full decision-making committee for renewals and expansions. 💼</div></div>
+    </div>
+    <div class="bpl" style="margin-top:2px;">
+      <div class="bpi">🔔 <span><b>Set job change alerts</b> on your key champions — when they move, your renewal risk spikes immediately.</span></div>
+      <div class="bpi">🗺️ <span><b>Map the buying committee.</b> Renewals fail when only one stakeholder is engaged. Multi-thread early.</span></div>
+    </div>
+    <div class="links" style="margin-top:4px;">
+      <a href="https://app.notion.com/p/chargebeeknowtion/Sales-Navigator-34c3592792eb8015bd00e72c4c5e78d6" class="pill pp" target="_blank"><i class="ti ti-book"></i> Full Guide</a>
+    </div>
+  </div>
+
+  <!-- SPOTDRAFT -->
+  <div class="card">
+    <div class="ctop">
+      <div class="cicon" style="background:#E1F5EE;"><i class="ti ti-writing" style="color:#0F6E56;"></i></div>
+      <div><div class="cname">SpotDraft</div><div class="ctag">Contract creation & e-signature for renewals and amendments. Every renewal or contract change must go through SpotDraft before it can be marked Closed Won. ✍️</div></div>
+    </div>
+    <hr class="divider"/>
+    <p class="slabel">Renewal & amendment contract workflow</p>
+    <div class="bpl">
+      <div class="bpi">1️⃣ <span><b>Click "New Contract"</b> on the Opportunity page → "Create contract from template" → select the right renewal or amendment template.</span></div>
+      <div class="bpi">2️⃣ <span><b>Fill in details</b> → click Next → "Send for signature" → choose recipient.</span></div>
+      <div class="bpi">3️⃣ <span><b>Once signed</b> — fill all mandatory SFDC fields → mark as Closed Won - Pending.</span></div>
+      <div class="bpi">4️⃣ <span><b>For amendments</b> — click "Amend Contract" on the contract page. Choose the type: Upsell, Cross-sell, Downsell, or Remove Products → new Amendment Opportunity auto-creates.</span></div>
+      <div class="bpi bpd">⚠️ <span>Contract must be in "Activated" status before amendments are available. Always activate after Closed Won - Booked.</span></div>
+    </div>
+    <div class="links" style="margin-top:4px;">
+      <a href="https://docs.google.com/presentation/d/147CX4f09N-PpIA74Q1QMgyDQD015Saeu9CW41hoN_QY/edit?slide=id.g2e879d352e6_0_2499" class="pill pt" target="_blank"><i class="ti ti-presentation"></i> SpotDraft Overview</a>
+      <a href="https://docs.google.com/presentation/d/1Hs22zvQwSX8fQKPOZ7Y-elXp7T8Eb82-Lv-lSdAh6xM/edit?slide=id.g2e16c1cb8b3_0_26" class="pill pb" target="_blank"><i class="ti ti-file-check"></i> Contract Signature Guide</a>
+      <a href="https://docs.google.com/presentation/d/1Hs22zvQwSX8fQKPOZ7Y-elXp7T8Eb82-Lv-lSdAh6xM/edit?slide=id.g2e2173c6f44_0_0" class="pill pa" target="_blank"><i class="ti ti-refresh"></i> SFDC Contract Management</a>
+    </div>
+  </div>
+
+  <!-- EVERSTAGE -->
+  <div class="card">
+    <div class="ctop">
+      <div class="cicon" style="background:#EAF3DE;"><i class="ti ti-coin" style="color:#3B6D11;"></i></div>
+      <div><div class="cname">Everstage</div><div class="ctag">Real-time commission & incentive visibility. Know exactly how your renewals, upsells & expansions translate to your payout — and which accounts to prioritise this month. 💰</div></div>
+    </div>
+    <hr class="divider"/>
+    <p class="slabel">Best practices — Siva Rajamani, CEO at Everstage</p>
+    <div class="bpl">
+      <div class="bpi">📊 <span><b>Check your dashboard daily.</b> See which renewals & expansions are moving your commission needle most.</span></div>
+      <div class="bpi">🎯 <span><b>Know your comp plan levers.</b> Renewals, upsells & multi-year deals often carry different multipliers — know which earns you most.</span></div>
+      <div class="bpi">🔔 <span><b>Slack & Salesforce integrations.</b> Commission updates push into your workflow — no separate login needed.</span></div>
+      <div class="bpi">🏆 <span><b>Track your leaderboard rank.</b> See how far you are from the next incentive tier — then go find that renewal.</span></div>
+    </div>
+    <div class="links" style="margin-top:4px;">
+      <a href="https://www.loom.com/share/3a16dbee0db6437eb9e4f1021a87b10f" class="pill pg" target="_blank"><i class="ti ti-player-play"></i> Platform Walkthrough (Loom)</a>
+      <a href="https://www.everstage.com/sales-commission/sales-commission-policy" class="pill pa" target="_blank"><i class="ti ti-star"></i> Best Practices Guide</a>
+    </div>
+  </div>
+
+  <!-- MINDTICKLE -->
+  <div class="card">
+    <div class="ctop">
+      <div class="cicon" style="background:#EEEDFE;"><i class="ti ti-school" style="color:#3C3489;"></i></div>
+      <div><div class="cname">MindTickle</div><div class="ctag">Your sales readiness & training platform. Stay sharp on product updates, renewal negotiation techniques & account management skills — what you learn directly impacts retention. 🎓</div></div>
+    </div>
+    <hr class="divider"/>
+    <p class="slabel">Best practices — Nishant Mungali, CPO at MindTickle</p>
+    <div class="bpl">
+      <div class="bpi">🏃 <span><b>Complete your programmes on time.</b> Product updates and new features are covered in MindTickle first — knowing them before your customer does = credibility.</span></div>
+      <div class="bpi">🎯 <span><b>Use your Ideal Rep Profile.</b> Maps your strengths and gaps vs top performers — your personal AM development roadmap.</span></div>
+      <div class="bpi">🎮 <span><b>Microlearning beats cramming.</b> Short, frequent sessions beat long sessions for retention every time.</span></div>
+      <div class="bpi">📈 <span><b>Readiness score = retention rate.</b> The sharper you are on product, the more confident your renewal conversations.</span></div>
+    </div>
+    <div class="links" style="margin-top:4px;">
+      <a href="https://chargebee.mindtickle.com/new/ui/learner/training/programs/2046482447150369748?series=2046482447150369748" class="pill pp" target="_blank"><i class="ti ti-external-link"></i> Open Chargebee MindTickle</a>
+      <a href="https://www.mindtickle.com/blog/" class="pill pa" target="_blank"><i class="ti ti-star"></i> Best Practices Blog</a>
+    </div>
+  </div>
+
+  <!-- NOTION -->
+  <div class="card">
+    <div class="ctop">
+      <div class="cicon" style="background:#F1EFE8;"><i class="ti ti-notes" style="color:#444441;"></i></div>
+      <div><div class="cname">Notion</div><div class="ctag">Your team's knowledge hub. Every renewal playbook, account guide & process doc lives here — search before you ask, and contribute when you find a better way. 📚</div></div>
+    </div>
+    <hr class="divider"/>
+    <p class="slabel">Best practices — Pravesh Mistry, Global Head of Sales at Notion</p>
+    <div class="bpl">
+      <div class="bpi">🔍 <span><b>Search before you ask.</b> Use Cmd+K (Mac) or Ctrl+K (Windows) — 90% of renewal process answers already exist.</span></div>
+      <div class="bpi">📌 <span><b>Pin your most-used pages.</b> Renewal playbooks, amendment guides, account templates — one click away, not three.</span></div>
+      <div class="bpi">🤝 <span><b>Contribute what you learn.</b> Found a better way to handle a difficult renewal? Document it — your team will thank you.</span></div>
+      <div class="bpi">🧠 <span><b>Use Notion AI.</b> Summarise long account history, draft renewal emails, pull key info — it reads your entire workspace.</span></div>
+    </div>
+    <div class="links" style="margin-top:4px;">
+      <a href="https://academy.notion.com/page/all-learning" class="pill pgr" target="_blank"><i class="ti ti-school"></i> Notion Academy — All Learning</a>
+      <a href="https://www.notion.com/help/guides/how-marketing-and-sales-teams-can-enhance-creativity-and-productivity-with" class="pill pt" target="_blank"><i class="ti ti-star"></i> Notion for Sales Teams Guide</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <i class="ti ti-repeat"></i>
+  <p><b>Renewals are won 365 days a year — not 30 days before expiry.</b> Stay close to your accounts, log everything in SFDC, and use these tools to spot risk before it becomes churn. Go retain & grow! 🌱</p>
+</div>
+
+</div>
+</body>
+</html>
